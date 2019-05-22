@@ -1,0 +1,8 @@
+kind: pipeline
+name: default
+
+steps:
+- name: test
+  image: golang:1.12.4-alpine
+  commands:
+  - go vet ./...
