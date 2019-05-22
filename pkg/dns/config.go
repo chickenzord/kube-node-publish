@@ -3,9 +3,9 @@ package dns
 import "os"
 
 var (
-	cfAPIKey string = ""
-	cfEmail  string = ""
-	cfZone   string = ""
+	cfAPIKey string
+	cfEmail  string
+	cfZone   string
 )
 
 //InitConfig reads environment variables to initialize config

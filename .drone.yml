@@ -14,6 +14,7 @@ steps:
   - name: build
     image: golang:1.12.4
     environment:
+      REPO: github.com/chickenzord/kube-node-publish
       GOOS: linux
       GOARCH: amd64
       CGO_ENABLED: 0
@@ -21,7 +22,9 @@ steps:
       - name: deps
         path: /go
     commands:
-      - go build -o bin/kube-node-publish
+      - go build
+        -o bin/kube-node-publish
+        -ldflags "-X $REPO/pkg/config.GitSha=$DRONE_COMMIT_SHA"
 
   - name: docker-tag
     image: chickenzord/drone-docker-tag
