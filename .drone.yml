@@ -3,6 +3,6 @@ name: default
 
 steps:
 - name: test
-  image: golang:1.12.4-alpine
+  image: golang:1.12.4
   commands:
   - go vet ./...
