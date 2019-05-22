@@ -2,7 +2,39 @@ kind: pipeline
 name: default
 
 steps:
-- name: test
-  image: golang:1.12.4
-  commands:
-  - go vet ./...
+
+  - name: test
+    image: golang:1.12.4
+    volumes:
+      - name: deps
+        path: /go
+    commands:
+      - go vet ./...
+
+  - name: build
+    image: golang:1.12.4
+    environment:
+      GOOS: linux
+      GOARCH: amd64
+      CGO_ENABLED: 0
+    volumes:
+      - name: deps
+        path: /go
+    commands:
+      - go build -o bin/kube-node-publish
+
+  - name: docker-tag
+    image: chickenzord/drone-docker-tag
+
+  - name: docker-build
+    image: plugins/docker
+    settings:
+      repo: chickenzord/kube-node-publish
+      username:
+        from_secret: DOCKER_USERNAME
+      password:
+        from_secret: DOCKER_PASSWORD
+
+volumes:
+  - name: deps
+    temp: {}
